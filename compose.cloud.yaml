@@ -1,0 +1,14 @@
+services:
+  control:
+    ports: !reset []
+  proxy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports: ["${COMPARTMENT_HTTP_PORT:-80}:80","${COMPARTMENT_HTTPS_PORT:-443}:443"]
+    environment:
+      COMPARTMENT_DOMAIN: ${COMPARTMENT_DOMAIN:?Set a DNS name for cloud TLS}
+    volumes: [./ops/Caddyfile:/etc/caddy/Caddyfile:ro,certs:/data,caddy_config:/config]
+    networks: [control,public]
+    depends_on: {control: {condition: service_healthy}}
+volumes: {certs: {}, caddy_config: {}}
+networks: {public: {}}

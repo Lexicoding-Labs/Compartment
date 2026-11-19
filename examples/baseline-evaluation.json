@@ -1,0 +1,809 @@
+{
+  "format": 1,
+  "playbook_digest": "027798c5bd08628df5550051a53897c2967c6af496c1d73d7688b21f81547047",
+  "source": "synthetic decision replay",
+  "model": "qwen3:4b-instruct",
+  "method": "Four controlled fixtures. Two calls per arm per fixture, 192 output tokens per call. Fresh contexts for independent reviewers. Only the assurance arm applies deterministic checks. This measures decision correctness on these fixtures; tools have no external side effects.",
+  "metrics": {
+    "single agent": {
+      "accepted": 1,
+      "cases": 4,
+      "conflict_precision": 0.5,
+      "conflict_recall": 1.0,
+      "false_positive_rate": 1.0,
+      "model_calls": 8,
+      "tokens": 1260
+    },
+    "multi-agent without Pushback": {
+      "accepted": 1,
+      "cases": 4,
+      "conflict_precision": 0.5,
+      "conflict_recall": 1.0,
+      "false_positive_rate": 1.0,
+      "model_calls": 8,
+      "tokens": 1256
+    },
+    "Compartment assurance": {
+      "accepted": 4,
+      "cases": 4,
+      "conflict_precision": 1.0,
+      "conflict_recall": 1.0,
+      "false_positive_rate": 0.0,
+      "model_calls": 8,
+      "tokens": 1256
+    }
+  },
+  "records": [
+    {
+      "case": "type drift with conflict",
+      "arm": "single agent",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": "12"
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": true
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 138,
+          "prompt_tokens_details": {
+            "cached_tokens": 101
+          },
+          "completion_tokens": 16,
+          "total_tokens": 154
+        },
+        {
+          "prompt_tokens": 162,
+          "prompt_tokens_details": {
+            "cached_tokens": 111
+          },
+          "completion_tokens": 16,
+          "total_tokens": 178
+        }
+      ],
+      "latency_s": 1.054
+    },
+    {
+      "case": "type drift with conflict",
+      "arm": "multi-agent without Pushback",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": "12"
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": true
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 138,
+          "prompt_tokens_details": {
+            "cached_tokens": 137
+          },
+          "completion_tokens": 16,
+          "total_tokens": 154
+        },
+        {
+          "prompt_tokens": 161,
+          "prompt_tokens_details": {
+            "cached_tokens": 119
+          },
+          "completion_tokens": 16,
+          "total_tokens": 177
+        }
+      ],
+      "latency_s": 0.877
+    },
+    {
+      "case": "type drift with conflict",
+      "arm": "Compartment assurance",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": "12"
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [
+        "reproduced contract check",
+        "structured requirement comparison"
+      ],
+      "decision": {
+        "compatible": false,
+        "ask_operator": true
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": true
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 138,
+          "prompt_tokens_details": {
+            "cached_tokens": 137
+          },
+          "completion_tokens": 16,
+          "total_tokens": 154
+        },
+        {
+          "prompt_tokens": 161,
+          "prompt_tokens_details": {
+            "cached_tokens": 160
+          },
+          "completion_tokens": 16,
+          "total_tokens": 177
+        }
+      ],
+      "latency_s": 0.785
+    },
+    {
+      "case": "compatible without conflict",
+      "arm": "multi-agent without Pushback",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 12
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": false
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 125,
+          "prompt_tokens_details": {
+            "cached_tokens": 101
+          },
+          "completion_tokens": 16,
+          "total_tokens": 141
+        },
+        {
+          "prompt_tokens": 148,
+          "prompt_tokens_details": {
+            "cached_tokens": 119
+          },
+          "completion_tokens": 16,
+          "total_tokens": 164
+        }
+      ],
+      "latency_s": 1.024
+    },
+    {
+      "case": "compatible without conflict",
+      "arm": "Compartment assurance",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 12
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "controls": [
+        "reproduced contract check",
+        "structured requirement comparison"
+      ],
+      "decision": {
+        "compatible": true,
+        "ask_operator": false
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": false
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 125,
+          "prompt_tokens_details": {
+            "cached_tokens": 124
+          },
+          "completion_tokens": 16,
+          "total_tokens": 141
+        },
+        {
+          "prompt_tokens": 148,
+          "prompt_tokens_details": {
+            "cached_tokens": 147
+          },
+          "completion_tokens": 16,
+          "total_tokens": 164
+        }
+      ],
+      "latency_s": 2.666
+    },
+    {
+      "case": "compatible without conflict",
+      "arm": "single agent",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 12
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": false
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 125,
+          "prompt_tokens_details": {
+            "cached_tokens": 124
+          },
+          "completion_tokens": 16,
+          "total_tokens": 141
+        },
+        {
+          "prompt_tokens": 149,
+          "prompt_tokens_details": {
+            "cached_tokens": 111
+          },
+          "completion_tokens": 16,
+          "total_tokens": 165
+        }
+      ],
+      "latency_s": 3.597
+    },
+    {
+      "case": "missing field without conflict",
+      "arm": "Compartment assurance",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104"
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [
+        "reproduced contract check",
+        "structured requirement comparison"
+      ],
+      "decision": {
+        "compatible": false,
+        "ask_operator": false
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": false
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 118,
+          "prompt_tokens_details": {
+            "cached_tokens": 97
+          },
+          "completion_tokens": 16,
+          "total_tokens": 134
+        },
+        {
+          "prompt_tokens": 141,
+          "prompt_tokens_details": {
+            "cached_tokens": 115
+          },
+          "completion_tokens": 16,
+          "total_tokens": 157
+        }
+      ],
+      "latency_s": 1.933
+    },
+    {
+      "case": "missing field without conflict",
+      "arm": "single agent",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104"
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": false
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 118,
+          "prompt_tokens_details": {
+            "cached_tokens": 117
+          },
+          "completion_tokens": 16,
+          "total_tokens": 134
+        },
+        {
+          "prompt_tokens": 142,
+          "prompt_tokens_details": {
+            "cached_tokens": 107
+          },
+          "completion_tokens": 16,
+          "total_tokens": 158
+        }
+      ],
+      "latency_s": 0.917
+    },
+    {
+      "case": "missing field without conflict",
+      "arm": "multi-agent without Pushback",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104"
+        },
+        "instructions": [
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": true
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "expected": {
+        "compatible": false,
+        "ask_operator": false
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 118,
+          "prompt_tokens_details": {
+            "cached_tokens": 117
+          },
+          "completion_tokens": 16,
+          "total_tokens": 134
+        },
+        {
+          "prompt_tokens": 141,
+          "prompt_tokens_details": {
+            "cached_tokens": 140
+          },
+          "completion_tokens": 16,
+          "total_tokens": 157
+        }
+      ],
+      "latency_s": 0.864
+    },
+    {
+      "case": "compatible with conflict",
+      "arm": "single agent",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 0
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": true
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 137,
+          "prompt_tokens_details": {
+            "cached_tokens": 97
+          },
+          "completion_tokens": 16,
+          "total_tokens": 153
+        },
+        {
+          "prompt_tokens": 161,
+          "prompt_tokens_details": {
+            "cached_tokens": 107
+          },
+          "completion_tokens": 16,
+          "total_tokens": 177
+        }
+      ],
+      "latency_s": 1.059
+    },
+    {
+      "case": "compatible with conflict",
+      "arm": "multi-agent without Pushback",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 0
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [],
+      "decision": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": true
+      },
+      "accepted": false,
+      "usage": [
+        {
+          "prompt_tokens": 137,
+          "prompt_tokens_details": {
+            "cached_tokens": 136
+          },
+          "completion_tokens": 16,
+          "total_tokens": 153
+        },
+        {
+          "prompt_tokens": 160,
+          "prompt_tokens_details": {
+            "cached_tokens": 115
+          },
+          "completion_tokens": 16,
+          "total_tokens": 176
+        }
+      ],
+      "latency_s": 2.696
+    },
+    {
+      "case": "compatible with conflict",
+      "arm": "Compartment assurance",
+      "primary": {
+        "contract": {
+          "version": "2.0",
+          "endpoint": "/inventory",
+          "required": [
+            "sku",
+            "available"
+          ],
+          "types": {
+            "sku": "string",
+            "available": "integer"
+          }
+        },
+        "sample": {
+          "sku": "P-104",
+          "available": 0
+        },
+        "instructions": [
+          "Open the tracking ticket immediately when a compatibility issue is found.",
+          "Wait for operator review before opening a tracking ticket."
+        ]
+      },
+      "model": "qwen3:4b-instruct",
+      "first": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "second": {
+        "ask_operator": true,
+        "compatible": false
+      },
+      "controls": [
+        "reproduced contract check",
+        "structured requirement comparison"
+      ],
+      "decision": {
+        "compatible": true,
+        "ask_operator": true
+      },
+      "expected": {
+        "compatible": true,
+        "ask_operator": true
+      },
+      "accepted": true,
+      "usage": [
+        {
+          "prompt_tokens": 137,
+          "prompt_tokens_details": {
+            "cached_tokens": 136
+          },
+          "completion_tokens": 16,
+          "total_tokens": 153
+        },
+        {
+          "prompt_tokens": 160,
+          "prompt_tokens_details": {
+            "cached_tokens": 159
+          },
+          "completion_tokens": 16,
+          "total_tokens": 176
+        }
+      ],
+      "latency_s": 3.319
+    }
+  ]
+}

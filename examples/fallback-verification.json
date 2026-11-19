@@ -1,0 +1,47 @@
+{
+  "fixture": "inventory-v2",
+  "model": "qwen3:4b-instruct",
+  "gates": {
+    "live_model_meeting": "pass",
+    "independent_reproduction": "pass",
+    "approval_and_ticket": "pass",
+    "authenticated_export": "pass",
+    "second_postgres_restore_and_new_run": "pass"
+  },
+  "run": "87ee7a98-99da-4440-b07c-dd255e8b33e1",
+  "nodes": 75,
+  "edges": 122,
+  "meeting_positions": [
+    {
+      "actor": "planning-rep",
+      "evidence": "775fe117-5c71-4f65-a302-71d05f08e688",
+      "model": "qwen3:4b-instruct",
+      "position": "proposal",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    },
+    {
+      "actor": "execution-rep",
+      "evidence": "f2723b6d-3116-49bc-a203-8f1fbf129027",
+      "model": "qwen3:4b-instruct",
+      "position": "dissent",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    },
+    {
+      "actor": "quality-director",
+      "evidence": "9c699e42-8b4c-4cb8-a972-e1b664624db0",
+      "model": "qwen3:4b-instruct",
+      "position": "commitment",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    }
+  ],
+  "provider_failover": "unavailable HTTP endpoint to live local model passed",
+  "crash_recovery": {
+    "before_dispatch": "pass",
+    "after_external_commit_before_control_commit": "pass",
+    "automatic_redispatches": 0,
+    "external_tickets": 1,
+    "lease_expiry": "advanced by test clock"
+  },
+  "postgres": "PostgreSQL 16.2 on aarch64-apple-darwin23.5.0, compiled by Apple clang version 15.0.0 (clang-1500.0.40.1), 64-bit",
+  "restored_new_run": "8698937a-87b5-41af-9796-af7a2c4cf4a6"
+}

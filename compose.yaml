@@ -1,0 +1,89 @@
+name: compartment
+x-runtime: &runtime
+  build: {context: ., target: runtime}
+  image: compartment:0.2.0
+  init: true
+  restart: unless-stopped
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_DB: compartment
+      POSTGRES_USER: compartment
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run ops/configure.py}
+    volumes: [db:/var/lib/postgresql/data]
+    networks: [state]
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U compartment -d compartment"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  control:
+    <<: *runtime
+    environment:
+      DATABASE_URL: postgresql://compartment:${POSTGRES_PASSWORD}@db/compartment
+      ARTIFACT_DIR: /data/artifacts
+      AUDIT_KEY: ${AUDIT_KEY:?Run ops/configure.py}
+      OPERATOR_TOKEN: ${OPERATOR_TOKEN:?Run ops/configure.py}
+      WORKER_TOKEN: ${WORKER_TOKEN:?Run ops/configure.py}
+      TICKET_TOKEN: ${TICKET_TOKEN:?Run ops/configure.py}
+      OPERATORS: ${OPERATORS:-[]}
+      MODEL_ROUTES: ${MODEL_ROUTES:-[]}
+      TICKET_URL: http://tickets:8092
+    ports: ["${COMPARTMENT_BIND:-127.0.0.1}:${COMPARTMENT_PORT:-8080}:8080"]
+    networks: [state,control,ticketnet,ingress,introspection]
+    volumes: [artifacts:/data/artifacts,backups:/backup]
+    depends_on: {db: {condition: service_healthy}}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8080/health',timeout=2)"]
+      interval: 10s
+      timeout: 4s
+      retries: 10
+  worker:
+    <<: *runtime
+    command: [python, -m, compartment.worker]
+    environment:
+      WORKER_TOKEN: ${WORKER_TOKEN}
+      CONTROL_URL: http://control:8080
+      LAB_URL: http://lab:8091
+      MODEL_ENDPOINTS: ${MODEL_ENDPOINTS:-}
+      PROVIDER_API_KEY: ${PROVIDER_API_KEY:-}
+      FALLBACK_API_KEY: ${FALLBACK_API_KEY:-}
+    networks: [control,fixture,model]
+    depends_on: {control: {condition: service_healthy}, lab: {condition: service_healthy}}
+  lab:
+    <<: *runtime
+    build: {context: ., target: lab}
+    image: compartment-inventory:0.2.0
+    environment:
+      CONTROL_URL: http://control:8080
+      CONTAINER_BROWSER: "1"
+      HOME: /tmp
+    networks: [fixture,introspection]
+    mem_limit: 768m
+    pids_limit: 128
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8091/health',timeout=2)"]
+      interval: 10s
+      timeout: 4s
+      retries: 10
+  tickets:
+    <<: *runtime
+    command: [uvicorn, compartment.tickets:app, --host, 0.0.0.0, --port, "8092", --no-access-log]
+    environment:
+      TICKET_TOKEN: ${TICKET_TOKEN}
+      TICKET_DB: /lab/tickets.sqlite
+    networks: [ticketnet]
+    volumes: [tickets:/lab]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8092/health',timeout=2)"]
+      interval: 10s
+      timeout: 4s
+      retries: 10
+volumes: {db: {}, artifacts: {}, tickets: {}, backups: {}}
+networks: {introspection: {internal: true}, ingress: {}, ticketnet: {internal: true}, state: {internal: true}, control: {internal: true}, fixture: {internal: true}, model: {}}

@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "os": "macOS 27.3",
+  "architecture": "arm64",
+  "control_store": "disposable SQLite",
+  "data": "synthetic test conversation",
+  "native_tests": 6,
+  "control_tests": 19,
+  "turns": [
+    {
+      "representative": "planning-rep",
+      "message": "Our audit codename is Silver Birch. Which inputs do you need before planning this integration audit? Reply briefly.",
+      "reply": "What are the key objectives and scope of the Silver Birch audit?",
+      "model": "qwen3:4b-instruct",
+      "status": "completed"
+    },
+    {
+      "representative": "planning-rep",
+      "message": "What was the audit codename I gave you? Reply with the codename.",
+      "reply": "Silver Birch",
+      "model": "qwen3:4b-instruct",
+      "status": "completed"
+    },
+    {
+      "representative": "quality-rep",
+      "message": "What evidence would you request before accepting an integration audit? Reply briefly.",
+      "reply": "I would request documentation of the audit scope, methodology, findings, and signed conclusions from the third-party auditor, along with evidence of compliance with relevant standards (e.g., ISO 9001, ISO 27001) and any corrective actions taken.",
+      "model": "qwen3:4b-instruct",
+      "status": "completed"
+    }
+  ],
+  "speech_synthesis": "Non-empty PCM buffers rendered by AVSpeechSynthesizer",
+  "device_checks_pending": [
+    "live microphone and dictation",
+    "audible playback",
+    "VoiceOver"
+  ]
+}

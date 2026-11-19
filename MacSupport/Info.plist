@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict>
+<key>CFBundleName</key><string>Compartment</string><key>CFBundleDisplayName</key><string>Compartment</string>
+<key>CFBundleIdentifier</key><string>app.compartment.operator</string><key>CFBundleExecutable</key><string>Compartment</string>
+<key>CFBundlePackageType</key><string>APPL</string><key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+<key>CFBundleVersion</key><string>3</string><key>CFBundleShortVersionString</key><string>0.2.1</string>
+<key>CFBundleIconFile</key><string>Compartment</string><key>LSMinimumSystemVersion</key><string>14.0</string>
+<key>LSApplicationCategoryType</key><string>public.app-category.productivity</string>
+<key>NSPrincipalClass</key><string>NSApplication</string>
+<key>NSMicrophoneUsageDescription</key><string>Dictate a message to your department Representative. You can review the text before sending it.</string>
+<key>NSSpeechRecognitionUsageDescription</key><string>Transcribe your spoken message on this Mac for review in the conversation composer.</string>
+<key>NSAppTransportSecurity</key><dict><key>NSAllowsLocalNetworking</key><true/></dict>
+</dict></plist>

@@ -1,0 +1,47 @@
+{
+  "fixture": "inventory-v2",
+  "model": "qwen3:4b-instruct",
+  "gates": {
+    "live_model_meeting": "pass",
+    "independent_reproduction": "pass",
+    "approval_and_ticket": "pass",
+    "authenticated_export": "pass",
+    "second_postgres_restore_and_new_run": "pass"
+  },
+  "run": "892e2171-0cd2-4d9e-b874-d8453b83399b",
+  "nodes": 74,
+  "edges": 121,
+  "meeting_positions": [
+    {
+      "actor": "planning-rep",
+      "evidence": "78ae7c9e-38ca-406f-ba18-4f751c1f5363",
+      "model": "qwen3:4b-instruct",
+      "position": "proposal",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    },
+    {
+      "actor": "execution-rep",
+      "evidence": "e5c9d34d-fe80-4332-af71-e56dadaacd74",
+      "model": "qwen3:4b-instruct",
+      "position": "dissent",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    },
+    {
+      "actor": "quality-director",
+      "evidence": "3c2a0e84-b81b-4778-a39f-97942e53c0e9",
+      "model": "qwen3:4b-instruct",
+      "position": "commitment",
+      "statement": "The approved context contains incompatible requirements: one mandates immediate tracking ticket opening upon compatibility issues, while the other requires operator review before opening any ticket, creating a contradiction in action timing."
+    }
+  ],
+  "browser_console": "pass",
+  "crash_recovery": {
+    "before_dispatch": "pass",
+    "after_external_commit_before_control_commit": "pass",
+    "automatic_redispatches": 0,
+    "external_tickets": 1,
+    "lease_expiry": "advanced by test clock"
+  },
+  "postgres": "PostgreSQL 16.2 on aarch64-apple-darwin23.5.0, compiled by Apple clang version 15.0.0 (clang-1500.0.40.1), 64-bit",
+  "restored_new_run": "d1caab4b-9aeb-4b31-a859-ed60ea5189a9"
+}

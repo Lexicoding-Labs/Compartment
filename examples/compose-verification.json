@@ -1,0 +1,29 @@
+{
+  "local": {
+    "run": "7f535f1d-0797-4730-9dd6-88ba36109841",
+    "identities": 25,
+    "departments": 5,
+    "model_mode": "fixture",
+    "status": "accepted",
+    "lineage_nodes": 70,
+    "lineage_edges": 113,
+    "elapsed_s": 2.6,
+    "audit_integrity": true
+  },
+  "restored_cloud_profile": {
+    "run": "f3429919-e63f-4c50-8ce8-13623502e1e6",
+    "identities": 25,
+    "departments": 5,
+    "model_mode": "fixture",
+    "status": "accepted",
+    "lineage_nodes": 70,
+    "lineage_edges": 113,
+    "elapsed_s": 2.63,
+    "audit_integrity": true
+  },
+  "deployment": "two isolated Compose projects in a disposable ARM64 Linux VM",
+  "trusted_https": "pass using locally issued Caddy certificate",
+  "restored_manifest_and_artifact_bytes": "identical",
+  "compose": "5.8.0",
+  "engine": "29.10.0"
+}

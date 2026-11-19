@@ -1,0 +1,9 @@
+{$COMPARTMENT_DOMAIN} {
+    @internal path /internal/* /docs* /openapi.json /redoc*
+    respond @internal 404
+    request_body {
+        max_size 256KB
+    }
+    header Strict-Transport-Security "max-age=31536000"
+    reverse_proxy control:8080
+}

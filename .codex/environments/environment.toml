@@ -1,0 +1,10 @@
+version = 1
+name = "Compartment"
+
+[setup]
+script = ""
+
+[[actions]]
+name = "Run Mac App"
+icon = "run"
+command = "./script/build_and_run.sh"
