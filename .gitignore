@@ -1,0 +1,14 @@
+.env
+__pycache__/
+*.pyc
+node_modules/
+web/dist/
+*.sqlite*
+backups/
+.venv/
+
+.build/
+dist/
+.swiftpm/
+
+.DS_Store
